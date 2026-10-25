@@ -1,1 +1,202 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BURJU KAZİNO</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            background-color: #0d0d0d;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 12px;
+            padding: 12px 20px;
+            width: 100%;
+            max-width: 350px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        .balance-title {
+            font-size: 14px;
+            color: #aaa;
+        }
+        .balance-amount {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00ff00;
+        }
+        .container {
+            width: 100%;
+            max-width: 350px;
+        }
+        .section-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #ffcc00;
+        }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .game-card {
+            background: linear-gradient(145deg, #222, #111);
+            border: 2px solid #444;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .game-card:active {
+            transform: scale(0.95);
+            border-color: #ffcc00;
+        }
+        .game-icon {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+        .game-name {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .slot-machine {
+            background: #1a1a1a;
+            border: 2px solid #555;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        .slots-display {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-size: 32px;
+            background: #000;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px inset #333;
+        }
+        .spin-btn {
+            background: linear-gradient(145deg, #ffcc00, #cc9900);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .spin-btn:active {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Balans Paneli -->
+    <div class="header">
+        <div>
+            <div class="balance-title">Balansınız:</div>
+            <div class="balance-amount" id="balance">10.0 ₼</div>
+        </div>
+        <button style="background: #333; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;" onclick="addBalance()">+ Artır</button>
+    </div>
+
+    <div class="container">
+        <!-- Oýunlar Sanawy -->
+        <div class="section-title">🎲 Kazino Oýunları</div>
+        <div class="games-grid">
+            <div class="game-card" onclick="playGame('Slot Maşın')">
+                <div class="game-icon">🎰</div>
+                <div class="game-name">Slot</div>
+            </div>
+            <div class="game-card" onclick="playGame('Ruletka')">
+                <div class="game-icon">🎡</div>
+                <div class="game-name">Ruletka</div>
+            </div>
+            <div class="game-card" onclick="playGame('Blekjak')">
+                <div class="game-icon">🃏</div>
+                <div class="game-name">Blekjak</div>
+            </div>
+            <div class="game-card" onclick="playGame('Zər Oyunu')">
+                <div class="game-icon">🎲</div>
+                <div class="game-name">Zər Oyunu</div>
+            </div>
+        </div>
+
+        <!-- Sürətli Slot Oyunu Bölmesi -->
+        <div class="slot-machine">
+            <div class="section-title" style="margin-top:0;">🎰 Sürətli Slot</div>
+            <div class="slots-display">
+                <span id="s1">🍒</span>
+                <span id="s2">🍋</span>
+                <span id="s3">🔔</span>
+            </div>
+            <button class="spin-btn" onclick="spinSlot()">FIRSAT (1 ₼)</button>
+        </div>
+    </div>
+
+    <script>
+        let userBalance = 10.0;
+
+        function updateBalanceView() {
+            document.getElementById('balance').innerText = userBalance.toFixed(1) + " ₼";
+        }
+
+        function addBalance() {
+            userBalance += 10.0;
+            updateBalanceView();
+            alert("Balansa 10 ₼ əlavə olundu!");
+        }
+
+        function playGame(gameName) {
+            alert(gameName + " oyununa xoş gəldiniz! Tezliklə aktiv olacaq.");
+        }
+
+        function spinSlot() {
+            if (userBalance < 1.0) {
+                alert("Balansınızda kifayət qədər vəsait yoxdur!");
+                return;
+            }
+            userBalance -= 1.0;
+
+            const symbols = ['🍒', '🍋', '🔔', '⭐', '💎', '7️⃣'];
+            const s1 = symbols[Math.floor(Math.random() * symbols.length)];
+            const s2 = symbols[Math.floor(Math.random() * symbols.length)];
+            const s3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+            document.getElementById('s1').innerText = s1;
+            document.getElementById('s2').innerText = s2;
+            document.getElementById('s3').innerText = s3;
+
+            if (s1 === s2 && s2 === s3) {
+                userBalance += 10.0;
+                alert("🎉 Tebrikler! 10 ₼ qazandınız!");
+            } else if (s1 === s2 || s2 === s3 || s1 === s3) {
+                userBalance += 2.0;
+                alert("✨ Afərin! 2 ₼ qazandınız.");
+            }
+            
+            updateBalanceView();
+        }
+    </script>
+</body>
+</html>
 
